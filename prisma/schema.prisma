@@ -25,8 +25,8 @@ model User {
 
 model auth {
   id        String   @id @default(uuid())
-  code      String   @unique @default(cuid())
-  id_user  String  @unique
+  code      String   
+  id_user  String 
   createdAt DateTime @default(now())
   validatedAt DateTime?
   user     User     @relation(fields: [id_user], references: [id])  
