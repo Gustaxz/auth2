@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CredentialDto } from './dto/credential.dto';
-import { prisma } from 'src/prisma';
-import { MailService } from 'src/mail/mail.service';
-import { add } from 'date-fns';
 import { JwtService } from '@nestjs/jwt';
+import { add } from 'date-fns';
+import { MailService } from 'src/mail/mail.service';
+import { prisma } from 'src/prisma';
+import { CredentialDto } from './dto/credential.dto';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +12,39 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  async loginFaceID(credentialDto: CredentialDto) {
+    const { email, password } = credentialDto;
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (user.password !== password) {
+      throw new NotFoundException('Invalid password');
+    }
+
+    const token = Math.random().toString(36).substring(2);
+
+    const auth = await prisma.auth.create({
+      data: {
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
+        code: token,
+        validatedAt: add(new Date(), { minutes: 5 }),
+      },
+    });
+
+    return auth;
+  }
   async login(credentialDto: CredentialDto) {
     const { email, password } = credentialDto;
 

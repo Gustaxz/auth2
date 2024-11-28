@@ -51,6 +51,7 @@ export class FaceidService {
   }
 
   async recognition(file: Express.Multer.File, userId: string) {
+    console.log({ file });
     if (!file) {
       return {
         message: 'No file uploaded',

@@ -1,16 +1,16 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { UserService } from './user.service';
+import { Public } from 'src/auth/decorator/token.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Public } from 'src/auth/decorator/token.decorator';
+import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
@@ -32,6 +32,12 @@ export class UserController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
+  }
+
+  @Public()
+  @Get('email/:email')
+  findByEmail(@Param('email') id: string) {
+    return this.userService.findOneByEmail(id);
   }
 
   @Public()

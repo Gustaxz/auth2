@@ -1,7 +1,7 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CredentialDto } from './dto/credential.dto';
 import { Public } from './decorator/token.decorator';
+import { CredentialDto } from './dto/credential.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -11,6 +11,12 @@ export class AuthController {
   @Post('login')
   login(@Body() credentialDto: CredentialDto) {
     return this.authService.login(credentialDto);
+  }
+
+  @Public()
+  @Post('loginFaceID')
+  loginFaceID(@Body() credentialDto: CredentialDto) {
+    return this.authService.loginFaceID(credentialDto);
   }
 
   @Public()
