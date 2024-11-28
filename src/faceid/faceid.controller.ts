@@ -1,5 +1,6 @@
 import {
   Controller,
+  Param,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -13,16 +14,22 @@ export class FaceidController {
   constructor(private readonly faceidService: FaceidService) {}
 
   @Public()
-  @Post('saveFile')
+  @Post('saveFile/:userId')
   @UseInterceptors(FileInterceptor('file'))
-  async saveFile(@UploadedFile() file: Express.Multer.File) {
-    return await this.faceidService.saveFile(file);
+  async saveFile(
+    @UploadedFile() file: Express.Multer.File,
+    @Param('userId') userId: string,
+  ) {
+    return await this.faceidService.saveFile(file, userId);
   }
 
   @Public()
-  @Post('recog')
+  @Post('recog/:userId')
   @UseInterceptors(FileInterceptor('file'))
-  async recognition(@UploadedFile() file: Express.Multer.File) {
-    return await this.faceidService.recognition(file);
+  async recognition(
+    @UploadedFile() file: Express.Multer.File,
+    @Param('userId') userId: string,
+  ) {
+    return await this.faceidService.recognition(file, userId);
   }
 }
