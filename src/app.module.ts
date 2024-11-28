@@ -4,6 +4,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
 import { ConfigModule } from '@nestjs/config';
+import { FaceidModule } from './faceid/faceid.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ConfigModule } from '@nestjs/config';
     UserModule,
     AuthModule,
     MailModule,
+    FaceidModule,
   ],
   controllers: [],
   providers: [AppService],
